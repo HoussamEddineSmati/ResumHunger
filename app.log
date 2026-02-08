@@ -1,0 +1,63 @@
+
+> resum-hunger@0.1.0 dev
+> next dev
+
+  Γû▓ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ Γ£ô Starting...
+ Γ£ô Ready in 1608ms
+ Γùï Compiling /middleware ...
+ Γ£ô Compiled /middleware in 5.7s (304 modules)
+ Γùï Compiling / ...
+ Γ£ô Compiled / in 12.1s (522 modules)
+ HEAD / 200 in 12688ms
+ GET / 200 in 13458ms
+ Γùï Compiling /login ...
+ Γ£ô Compiled /login in 3.4s (774 modules)
+ Γùï Compiling /_not-found ...
+ Γ£ô Compiled /_not-found in 737ms (763 modules)
+ GET /noise.png 404 in 1054ms
+ POST /login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fdashboard 303 in 779ms
+ GET /login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fdashboard 200 in 69ms
+ GET /noise.png 404 in 47ms
+ Γùï Compiling /register ...
+ Γ£ô Compiled /register in 6.1s (1031 modules)
+ POST /register 303 in 711ms
+ GET /register 200 in 150ms
+ GET /noise.png 404 in 52ms
+ Γ£ô Compiled in 1970ms (1042 modules)
+ Γ£ô Compiled in 410ms (269 modules)
+ Γ£ô Compiled in 821ms (269 modules)
+ Γ£ô Compiled in 168ms (269 modules)
+ Γ£ô Compiled in 139ms (269 modules)
+ GET /login 200 in 212ms
+ Γùï Compiling /pricing ...
+ Γ£ô Compiled /pricing in 563ms (1030 modules)
+ GET / 200 in 668ms
+ GET /pricing 200 in 669ms
+ Γùï Compiling /_not-found ...
+ Γ£ô Compiled /_not-found in 1758ms (1031 modules)
+ GET /noise.png 404 in 2098ms
+ GET / 200 in 120ms
+ GET /noise.png 404 in 69ms
+ POST /register 200 in 467ms
+ Γùï Compiling /dashboard ...
+ Γ£ô Compiled /dashboard in 2s (1034 modules)
+ GET /dashboard 200 in 2751ms
+ POST /login 303 in 3299ms
+ GET /noise.png 404 in 171ms
+ Γùï Compiling /builder/[id] ...
+ Γ£ô Compiled /builder/[id] in 1664ms (1051 modules)
+ GET /builder/cmlds6y9x0002v0okuobxw87f?_rsc=1m402 200 in 138ms
+ GET /builder/cmlds6y9x0002v0okuobxw87f?_rsc=1ghs9 200 in 128ms
+ GET /builder/cmlds6y9x0002v0okuobxw87f 200 in 221ms
+ GET /dashboard 200 in 61ms
+ GET /noise.png 404 in 61ms
+ GET /dashboard 200 in 76ms
+ POST /dashboard 303 in 291ms
+ GET /noise.png 404 in 66ms
+ Γùï Compiling /pricing ...
+ Γ£ô Compiled /pricing in 1000ms (789 modules)
+ GET /pricing 200 in 1322ms
