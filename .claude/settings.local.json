@@ -4,7 +4,8 @@
       "Bash(npm install:*)",
       "Bash(npm run dev:*)",
       "Bash(npx jest --no-cache)",
-      "Bash(npx tailwindcss init -p)"
+      "Bash(npx tailwindcss init -p)",
+      "Bash(npx next build:*)"
     ]
   }
 }
