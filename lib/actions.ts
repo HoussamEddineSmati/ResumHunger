@@ -1,9 +1,10 @@
 'use server';
 
-import { signIn } from '@/auth';
+import { signIn, auth } from '@/auth';
 import { AuthError } from 'next-auth';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { revalidatePath } from 'next/cache';
 
 export async function authenticate(
     prevState: string | undefined,
@@ -71,4 +72,34 @@ export async function register(
 
 export async function authenticateGoogle() {
     await signIn('google');
+}
+
+export async function saveResume(id: string, content: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    await prisma.resume.update({
+        where: { id },
+        data: { content }
+    });
+}
+
+export async function deleteResume(id: string) {
+    const session = await auth();
+    if (!session?.user?.email) throw new Error("Unauthorized");
+
+    const resume = await prisma.resume.findUnique({
+        where: { id },
+        include: { user: true }
+    });
+
+    if (!resume || resume.user.email !== session.user.email) {
+        throw new Error("Unauthorized");
+    }
+
+    await prisma.resume.delete({
+        where: { id }
+    });
+
+    revalidatePath('/dashboard');
 }

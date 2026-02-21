@@ -1,6 +1,7 @@
 import { auth, signOut } from '@/auth';
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
+import { deleteResume } from '@/lib/actions';
 
 export default async function DashboardPage() {
     const session = await auth();
@@ -104,26 +105,50 @@ export default async function DashboardPage() {
 
                     {/* Resume Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-                        {resumes.map((resume) => (
-                            <div key={resume.id} className="bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition group">
-                                <div className="flex items-start justify-between mb-4">
-                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                                            <polyline points="14 2 14 8 20 8" />
-                                        </svg>
+                        {resumes.map((resume) => {
+                            let displayName = resume.title;
+                            try {
+                                const content = JSON.parse(resume.content || '{}');
+                                if (content.personalInfo?.fullName) {
+                                    displayName = content.personalInfo.fullName;
+                                }
+                            } catch (e) { }
+
+                            const deleteAction = deleteResume.bind(null, resume.id);
+
+                            return (
+                                <div key={resume.id} className="bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition group">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                                <polyline points="14 2 14 8 20 8" />
+                                            </svg>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <form action={deleteAction}>
+                                                <button
+                                                    type="submit"
+                                                    className="opacity-0 group-hover:opacity-100 transition px-3 py-1 bg-red-600/10 text-red-600 font-medium hover:bg-red-600 hover:text-white text-xs rounded-full"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </form>
+                                            <Link
+                                                href={`/builder/${resume.id}`}
+                                                className="opacity-0 group-hover:opacity-100 transition px-3 py-1 bg-black text-white font-medium text-xs rounded-full"
+                                            >
+                                                Edit
+                                            </Link>
+                                        </div>
                                     </div>
-                                    <Link
-                                        href={`/builder/${resume.id}`}
-                                        className="opacity-0 group-hover:opacity-100 transition px-3 py-1 bg-black text-white text-xs rounded-full"
-                                    >
-                                        Edit
-                                    </Link>
+                                    <h3 className="font-medium text-lg text-[#0a0a0a] mb-1">
+                                        {displayName || 'Untitled Resume'}
+                                    </h3>
+                                    <p className="text-sm text-[#666]">Last updated: {new Date(resume.updatedAt).toLocaleDateString()}</p>
                                 </div>
-                                <h3 className="font-medium text-lg text-[#0a0a0a] mb-1">{resume.title}</h3>
-                                <p className="text-sm text-[#666]">Last updated: {new Date(resume.updatedAt).toLocaleDateString()}</p>
-                            </div>
-                        ))}
+                            );
+                        })}
 
                         {resumes.length === 0 && (
                             <div className="col-span-2 flex flex-col items-center justify-center py-20 text-center">

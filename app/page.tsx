@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { auth, signOut } from '@/auth';
 
 /* ── Stat Card ── */
 function StatCard({ value, label, icon }: { value: string; label: string; icon: React.ReactNode }) {
@@ -24,16 +25,18 @@ function CompanyLogo({ name }: { name: string }) {
     );
 }
 
-export default function Home() {
+export default async function Home() {
+    const session = await auth();
+
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white overflow-hidden">
 
             {/* ── Background ── */}
-            <div className="fixed inset-0 pointer-events-none">
-                {/* Gradient orbs */}
-                <div className="absolute top-[-15%] left-[-5%] w-[55%] h-[55%] bg-violet-600/20 rounded-full blur-[140px] animate-glow-pulse" />
-                <div className="absolute bottom-[-15%] right-[-5%] w-[55%] h-[55%] bg-blue-600/20 rounded-full blur-[140px] animate-glow-pulse" style={{ animationDelay: '2s' }} />
-                <div className="absolute top-[35%] left-[30%] w-[40%] h-[40%] bg-fuchsia-600/10 rounded-full blur-[140px] animate-glow-pulse" style={{ animationDelay: '4s' }} />
+            <div className="fixed inset-0 pointer-events-none z-0">
+                {/* Background Fluid Art - CSS approximation */}
+                <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-fuchsia-600/30 rounded-full blur-[100px] animate-pulse" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-blue-600/30 rounded-full blur-[100px] animate-pulse delay-1000" />
+                <div className="absolute top-[40%] left-[40%] w-[50%] h-[50%] bg-purple-600/30 rounded-full blur-[100px] animate-pulse delay-2000" />
 
                 {/* Dot grid overlay */}
                 <div
@@ -88,18 +91,36 @@ export default function Home() {
 
                 {/* Right side */}
                 <div className="flex items-center gap-3">
-                    <Link
-                        href="/login"
-                        className="flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors duration-200"
-                    >
-                        Login
-                    </Link>
-                    <Link
-                        href="/register"
-                        className="flex items-center gap-1.5 px-4 py-1.5 text-[13px] text-white/90 bg-white/[0.06] border border-white/[0.08] rounded-full hover:bg-white/[0.1] transition-all duration-200"
-                    >
-                        Create Account
-                    </Link>
+                    {session?.user ? (
+                        <>
+                            <Link href="/dashboard" className="flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors duration-200">
+                                Dashboard
+                            </Link>
+                            <form action={async () => {
+                                'use server';
+                                await signOut();
+                            }}>
+                                <button type="submit" className="flex items-center gap-1.5 px-4 py-1.5 text-[13px] text-white/90 bg-white/[0.06] border border-white/[0.08] rounded-full hover:bg-white/[0.1] transition-all duration-200">
+                                    Sign Out
+                                </button>
+                            </form>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                className="flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors duration-200"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                href="/register"
+                                className="flex items-center gap-1.5 px-4 py-1.5 text-[13px] text-white/90 bg-white/[0.06] border border-white/[0.08] rounded-full hover:bg-white/[0.1] transition-all duration-200"
+                            >
+                                Create Account
+                            </Link>
+                        </>
+                    )}
                 </div>
             </nav>
 

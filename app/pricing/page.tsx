@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { auth, signOut } from '@/auth';
 
-export default function PricingPage() {
+export default async function PricingPage() {
+    const session = await auth();
+
     return (
         <div className="min-h-screen w-full relative overflow-hidden bg-black">
             {/* Background Fluid Art - matching auth pages */}
@@ -23,19 +26,46 @@ export default function PricingPage() {
                     </div>
                 </Link>
                 <div className="flex items-center gap-4">
-                    <Link href="/login" className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
-                        </svg>
-                        Sign In
-                    </Link>
-                    <Link href="/register" className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                        </svg>
-                        Create Account
-                    </Link>
+                    {session?.user ? (
+                        <>
+                            <Link href="/dashboard" className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Dashboard
+                            </Link>
+                            <form action={async () => {
+                                'use server';
+                                await signOut();
+                            }}>
+                                <button type="submit" className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                    Sign Out
+                                </button>
+                            </form>
+                        </>
+                    ) : (
+                        <>
+                            <Link href="/login" className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                    <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
+                                </svg>
+                                Sign In
+                            </Link>
+                            <Link href="/register" className="flex items-center gap-2 text-sm text-white/80 hover:text-white transition">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                                Create Account
+                            </Link>
+                        </>
+                    )}
                 </div>
             </nav>
 
@@ -85,10 +115,10 @@ export default function PricingPage() {
                             </li>
                         </ul>
                         <Link
-                            href="/login"
+                            href={session?.user ? "/dashboard" : "/login"}
                             className="w-full py-3 rounded-full border border-white/20 text-white text-sm font-medium text-center hover:bg-white/10 transition"
                         >
-                            Get Started
+                            {session?.user ? "Go to Dashboard" : "Get Started"}
                         </Link>
                     </div>
 
@@ -125,10 +155,10 @@ export default function PricingPage() {
                             </li>
                         </ul>
                         <Link
-                            href="/login"
+                            href={session?.user ? "/dashboard" : "/login"}
                             className="w-full py-3 rounded-full bg-white text-black text-sm font-medium text-center hover:bg-white/90 transition"
                         >
-                            Go Pro
+                            {session?.user ? "Go to Dashboard" : "Go Pro"}
                         </Link>
                     </div>
 
@@ -158,10 +188,10 @@ export default function PricingPage() {
                             </li>
                         </ul>
                         <Link
-                            href="/login"
+                            href={session?.user ? "/dashboard" : "/login"}
                             className="w-full py-3 rounded-full border border-white/20 text-white text-sm font-medium text-center hover:bg-white/10 transition"
                         >
-                            Get Lifetime
+                            {session?.user ? "Go to Dashboard" : "Get Lifetime"}
                         </Link>
                     </div>
                 </div>
