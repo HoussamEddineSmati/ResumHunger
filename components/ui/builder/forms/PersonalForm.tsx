@@ -79,6 +79,46 @@ export default function PersonalForm({ data, onChange }: Props) {
                     />
                 </div>
             </div>
+
+            <div className="pt-4 border-t border-white/10">
+                <h3 className="text-lg font-bold text-white mb-1">Professional Links</h3>
+                <p className="text-sm text-gray-400 mb-4">ATS systems scan for professional profiles</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label className={labelClasses}>LinkedIn URL</label>
+                        <input
+                            type="url"
+                            name="linkedIn"
+                            value={data.linkedIn || ''}
+                            onChange={handleChange}
+                            className={inputClasses}
+                            placeholder="https://linkedin.com/in/..."
+                        />
+                    </div>
+                    <div>
+                        <label className={labelClasses}>GitHub URL</label>
+                        <input
+                            type="url"
+                            name="github"
+                            value={data.github || ''}
+                            onChange={handleChange}
+                            className={inputClasses}
+                            placeholder="https://github.com/..."
+                        />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className={labelClasses}>Portfolio / Website</label>
+                        <input
+                            type="url"
+                            name="portfolio"
+                            value={data.portfolio || ''}
+                            onChange={handleChange}
+                            className={inputClasses}
+                            placeholder="https://yoursite.com"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
